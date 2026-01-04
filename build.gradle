@@ -39,3 +39,9 @@ tasks.withType(Test) {
         }
     }
 }
+
+tasks.register('demoqa_test', Test) {
+    useJUnitPlatform {
+        includeTags("demoqa")
+    }
+}

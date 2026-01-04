@@ -1,9 +1,11 @@
 package tests;
 
 import api.RestApi;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.ProfilePage;
 
+@Tag("demoqa")
 public class BookstoreTests extends TestBase {
     RestApi restApi = new RestApi();
     ProfilePage profilePage = new ProfilePage();
