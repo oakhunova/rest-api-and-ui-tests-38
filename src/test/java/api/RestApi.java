@@ -19,9 +19,6 @@ import static tests.TestData.userName;
 public class RestApi {
 
     private LoginResponseModel loginResponseModel;
-    String token;
-    String userId;
-    String expires;
 
     @Step("Авторизация")
     public void authApiPostRequest() {
@@ -37,9 +34,6 @@ public class RestApi {
                     .then()
                     .spec(responseSpec(200))
                     .extract().as(LoginResponseModel.class);
-            this.token = loginResponseModel.getToken();
-            this.userId = loginResponseModel.getUserId();
-            this.expires = loginResponseModel.getExpires();
 
     }
 
@@ -59,7 +53,7 @@ public class RestApi {
     public void addBook(String isbn) {
         BookDataModel bookData = new BookDataModel();
         BookDataModel.CollectionOfIsbns isbnCollection = new BookDataModel.CollectionOfIsbns();
-        bookData.setUserId(userId);
+        bookData.setUserId(loginResponseModel.getUserId());
         isbnCollection.setIsbn(isbn);
         bookData.setCollectionOfIsbns(Collections.singletonList(isbnCollection));
 
@@ -76,9 +70,9 @@ public class RestApi {
     @Step("Установка cookie")
     public void setCookie() {
         open("/favicon.ico");
-        getWebDriver().manage().addCookie(new Cookie("userID", userId));
-        getWebDriver().manage().addCookie(new Cookie("expires", expires));
-        getWebDriver().manage().addCookie(new Cookie("token", token));
+        getWebDriver().manage().addCookie(new Cookie("userID", loginResponseModel.getUserId()));
+        getWebDriver().manage().addCookie(new Cookie("expires", loginResponseModel.getExpires()));
+        getWebDriver().manage().addCookie(new Cookie("token", loginResponseModel.getToken()));
     }
 
     }
